@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes — ServiSucre Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+
+<aside class="admin-sidebar">
+    <div class="admin-logo">🛡️ ServiSucre</div>
+    <nav class="admin-nav">
+        <a href="/admin">📊 Dashboard</a>
+        <a href="/admin/reportes" class="active">🚨 Reportes</a>
+        <a href="/buscar" target="_blank">🌐 Ver plataforma</a>
+        <a href="/admin/logout" class="logout">🚪 Cerrar sesión</a>
+    </nav>
+</aside>
+
+<div class="admin-main">
+    <div class="admin-topbar">
+        <h1>🚨 Reportes pendientes</h1>
+    </div>
+
+    <div class="admin-card">
+        {% if reportes %}
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Proveedor</th>
+                        <th>Motivo</th>
+                        <th>Descripción</th>
+                        <th>IP</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in reportes %}
+                    <tr>
+                        <td>
+                            <a href="/perfil/{{ r['proveedor_id'] }}" target="_blank">
+                                <strong>{{ r['proveedor_nombre'] }}</strong>
+                            </a>
+                        </td>
+                        <td><span class="badge-rep">{{ r['motivo'] }}</span></td>
+                        <td>{{ r['descripcion'] or '—' }}</td>
+                        <td style="font-size:0.8rem; color:var(--gris)">{{ r['reporter_ip'] }}</td>
+                        <td style="font-size:0.82rem">{{ r['fecha'][:10] }}</td>
+                        <td class="acciones">
+                            <a href="/perfil/{{ r['proveedor_id'] }}" 
+                               target="_blank" class="btn-accion ver">Ver perfil</a>
+                            <a href="/admin/reporte/{{ r['id'] }}/resolver"
+                               class="btn-accion activar">✓ Resolver</a>
+                            <a href="/admin/proveedor/{{ r['proveedor_id'] }}/suspender"
+                               class="btn-accion suspender"
+                               onclick="return confirm('¿Suspender este proveedor?')">
+                               Suspender</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <div style="text-align:center; padding:60px; color:var(--gris)">
+                <div style="font-size:3rem; margin-bottom:12px">✅</div>
+                <h3>No hay reportes pendientes</h3>
+                <p>La plataforma está limpia</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

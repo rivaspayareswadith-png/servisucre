@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="auth-page" style="max-width:600px">
+    <div class="form-card" style="text-align:left">
+        <h3>✏️ Editar mi perfil</h3>
+        <p style="color:var(--gris); margin-bottom:24px">
+            Deja la contraseña en blanco si no quieres cambiarla
+        </p>
+
+        {% if error %}
+            <div class="alert-error">⚠️ {{ error }}</div>
+        {% endif %}
+
+        <form action="/perfil/{{ proveedor['id'] }}/editar" 
+              method="POST" class="form-modern">
+
+            <div class="form-group">
+                <label>Nombre completo</label>
+                <input type="text" name="nombre" 
+                       value="{{ proveedor['nombre'] }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Servicio principal</label>
+                <select name="servicio" required>
+                    <option value="plomero"      {% if proveedor['servicio']=='plomero' %}selected{% endif %}>🔧 Plomería</option>
+                    <option value="electricista" {% if proveedor['servicio']=='electricista' %}selected{% endif %}>⚡ Electricidad</option>
+                    <option value="clases"       {% if proveedor['servicio']=='clases' %}selected{% endif %}>📚 Clases</option>
+                    <option value="domicilio"    {% if proveedor['servicio']=='domicilio' %}selected{% endif %}>🛵 Domicilios</option>
+                    <option value="peluqueria"   {% if proveedor['servicio']=='peluqueria' %}selected{% endif %}>✂️ Peluquería</option>
+                    <option value="costura"      {% if proveedor['servicio']=='costura' %}selected{% endif %}>🪡 Costura</option>
+                    <option value="mecanico"     {% if proveedor['servicio']=='mecanico' %}selected{% endif %}>🔩 Mecánica</option>
+                    <option value="pintura"      {% if proveedor['servicio']=='pintura' %}selected{% endif %}>🖌️ Pintura</option>
+                    <option value="otro"         {% if proveedor['servicio']=='otro' %}selected{% endif %}>📦 Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Barrio donde trabajas</label>
+                <input type="text" name="barrio" 
+                       value="{{ proveedor['barrio'] }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Número de WhatsApp</label>
+                <input type="text" name="telefono" 
+                       value="{{ proveedor['telefono'] }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Descripción</label>
+                <textarea name="descripcion" rows="3">{{ proveedor['descripcion'] }}</textarea>
+            </div>
+
+            <div class="form-divider">🔐 Cambiar contraseña (opcional)</div>
+
+            <div class="form-group">
+                <label>Nueva contraseña</label>
+                <input type="password" name="password" 
+                       placeholder="Dejar en blanco para no cambiar">
+            </div>
+
+            <div class="form-group">
+                <label>Confirmar nueva contraseña</label>
+                <input type="password" name="confirmar" placeholder="Repite la contraseña">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Guardar cambios</button>
+                <a href="/perfil/{{ proveedor['id'] }}" class="btn-ver">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

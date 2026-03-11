@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="buscar-page">
+    <div class="buscar-header">
+        <h2>Servicios en Sincelejo</h2>
+        <p>Encuentra al profesional ideal cerca de ti</p>
+    </div>
+
+    <form class="search-bar" action="/buscar" method="GET">
+        <div class="search-field">
+            <span class="search-ico">🔍</span>
+            <input type="text" name="q" placeholder="¿Qué servicio necesitas?" value="{{ query }}">
+        </div>
+        <div class="search-field">
+            <span class="search-ico">📍</span>
+            <input type="text" name="barrio" placeholder="¿En qué barrio?" value="{{ barrio }}">
+        </div>
+        <button type="submit" class="btn-primary">Buscar</button>
+    </form>
+
+    <div class="resultados-area">
+        {% if proveedores %}
+            <p class="resultados-count">{{ proveedores|length }} proveedor(es) encontrado(s)</p>
+            <div class="proveedores-grid">
+                {% for p in proveedores %}
+                <div class="proveedor-card">
+                    <div class="card-avatar">{{ p.nombre[0] }}</div>
+                    <div class="card-info">
+                        <h3>{{ p.nombre }}</h3>
+                        <span class="tag">{{ p.servicio }}</span>
+
+                        <!-- ⭐ Estrellas -->
+                        <div class="stars-row">
+                            {% set promedio_int = (p.promedio | default(0) | float) | int %}
+                            {% for i in range(1, 6) %}
+                                {% if i <= promedio_int %}
+                                    <span class="star filled">★</span>
+                                {% else %}
+                                    <span class="star">★</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="stars-info">
+                                {% if p.total > 0 %}
+                                    {{ p.promedio }} ({{ p.total }} reseña{{ 's' if p.total != 1 }})
+                                {% else %}
+                                    Sin calificaciones aún
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <p class="card-barrio">📍 {{ p.barrio }}</p>
+                        {% if p.descripcion %}
+                            <p class="card-desc">{{ p.descripcion }}</p>
+                        {% endif %}
+
+                        <div class="card-actions">
+                            <a href="https://wa.me/57{{ p.telefono }}"
+                               target="_blank" class="btn-wa">💬 WhatsApp</a>
+                            <a href="/perfil/{{ p.id }}" class="btn-ver">Ver perfil →</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">🔎</div>
+                <h3>No encontramos resultados</h3>
+                <p>Intenta con otra búsqueda o sé el primero en publicar este servicio</p>
+                <a href="/registro" class="btn-primary">Publicar mi servicio</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

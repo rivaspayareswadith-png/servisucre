@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="perfil-page">
+
+    <!-- Cabecera -->
+    <div class="perfil-header">
+        <div class="perfil-foto-wrap">
+            {% if proveedor.foto %}
+                <img src="{{ url_for('static', filename='uploads/' + proveedor.foto) }}"
+                     alt="Foto" class="perfil-foto">
+            {% else %}
+                <div class="perfil-avatar">{{ proveedor.nombre[0] }}</div>
+            {% endif %}
+
+            {% if es_dueno %}
+            <form action="/perfil/{{ proveedor.id }}/subir-foto"
+                  method="POST" enctype="multipart/form-data" class="foto-form">
+                <label class="btn-foto" title="Cambiar foto">
+                    📷
+                    <input type="file" name="foto" accept="image/*"
+                           onchange="this.form.submit()" hidden>
+                </label>
+            </form>
+            {% endif %}
+        </div>
+
+        <div class="perfil-info">
+            <div class="perfil-nombre-row">
+                <h2>{{ proveedor.nombre }}</h2>
+                {% if es_dueno %}
+                    <span class="badge-dueno">✓ Tu perfil</span>
+                {% endif %}
+                {% if proveedor.reportes >= 3 %}
+                    <span class="badge-alerta">⚠️ Reportado</span>
+                {% endif %}
+            </div>
+
+            <p class="card-barrio">📍 {{ proveedor.barrio }}</p>
+
+            <div class="stars-row big">
+                {% for i in range(1, 6) %}
+                    <span class="star {% if i <= proveedor.promedio|int %}filled{% endif %}">★</span>
+                {% endfor %}
+                <span class="stars-info">
+                    {% if proveedor.total > 0 %}
+                        {{ proveedor.promedio }} de 5 — 
+                        {{ proveedor.total }} reseña{{ 's' if proveedor.total != 1 }}
+                    {% else %}
+                        Aún sin calificaciones
+                    {% endif %}
+                </span>
+            </div>
+
+            {% if proveedor.descripcion %}
+                <p class="perfil-desc">{{ proveedor.descripcion }}</p>
+            {% endif %}
+
+            <div class="perfil-actions">
+                <a href="https://wa.me/57{{ proveedor.telefono }}"
+                   target="_blank" class="btn-wa">💬 WhatsApp</a>
+                {% if es_dueno %}
+                    <a href="/perfil/{{ proveedor.id }}/editar"
+                       class="btn-primary">✏️ Editar perfil</a>
+                {% else %}
+                    <a href="/calificar/{{ proveedor.id }}"
+                       class="btn-primary">⭐ Calificar</a>
+                    <!-- BOTÓN REPORTAR — abre modal -->
+                    <button onclick="abrirReporte()" class="btn-reportar-sm">🚨 Reportar</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Servicios -->
+    <div class="servicios-section">
+        <h3>🔧 Servicios que ofrece</h3>
+        <div class="servicios-grid">
+            <div class="servicio-item principal">
+                <div class="servicio-badge">Principal</div>
+                <span class="servicio-nombre">{{ proveedor.servicio }}</span>
+            </div>
+            {% for s in servicios_extra %}
+            <div class="servicio-item">
+                <span class="servicio-nombre">{{ s[1] }}</span>
+                {% if s[2] %}<p>{{ s[2] }}</p>{% endif %}
+                {% if es_dueno %}
+                <a href="/perfil/{{ proveedor.id }}/eliminar-servicio/{{ s[0] }}"
+                   class="btn-eliminar"
+                   onclick="return confirm('¿Eliminar?')">✕</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if es_dueno %}
+        <div class="agregar-servicio-form">
+            <h4>➕ Agregar otro servicio</h4>
+            <form action="/perfil/{{ proveedor.id }}/agregar-servicio"
+                  method="POST" class="form-inline">
+                <div class="form-group">
+                    <label>Servicio</label>
+                    <select name="servicio" required>
+                        <option value="">Selecciona</option>
+                        <option value="plomero">🔧 Plomería</option>
+                        <option value="electricista">⚡ Electricidad</option>
+                        <option value="clases">📚 Clases</option>
+                        <option value="domicilio">🛵 Domicilios</option>
+                        <option value="peluqueria">✂️ Peluquería</option>
+                        <option value="costura">🪡 Costura</option>
+                        <option value="mecanico">🔩 Mecánica</option>
+                        <option value="pintura">🖌️ Pintura</option>
+                        <option value="otro">📦 Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" name="descripcion" placeholder="Opcional">
+                </div>
+                <button type="submit" class="btn-primary">Agregar</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Galería -->
+    <div class="galeria-section">
+        <div class="galeria-header">
+            <h3>🖼️ Trabajos realizados</h3>
+            {% if es_dueno %}
+                <span class="galeria-count">{{ galeria|length }}/6 fotos</span>
+            {% endif %}
+        </div>
+
+        {% if galeria %}
+        <div class="galeria-grid">
+            {% for foto in galeria %}
+            <div class="galeria-item">
+                <img src="{{ url_for('static', filename='galeria/' + foto[1]) }}"
+                     alt="{{ foto[2] or 'Trabajo' }}"
+                     onclick="abrirFoto(this.src)">
+                {% if foto[2] %}
+                    <p class="galeria-desc">{{ foto[2] }}</p>
+                {% endif %}
+                {% if es_dueno %}
+                <a href="/perfil/{{ proveedor.id }}/galeria/eliminar/{{ foto[0] }}"
+                   class="galeria-del"
+                   onclick="return confirm('¿Eliminar foto?')">✕</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p class="galeria-empty">
+                {% if es_dueno %}
+                    Sube fotos de tus trabajos para generar más confianza ✨
+                {% else %}
+                    Este proveedor aún no ha subido fotos de trabajos
+                {% endif %}
+            </p>
+        {% endif %}
+
+        {% if es_dueno and galeria|length < 6 %}
+        <form action="/perfil/{{ proveedor.id }}/galeria/subir"
+              method="POST" enctype="multipart/form-data" class="galeria-form">
+            <div class="form-group">
+                <label>📸 Agregar foto de trabajo</label>
+                <input type="file" name="foto" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="descripcion"
+                       placeholder="Descripción (ej: Instalación eléctrica, 2024)">
+            </div>
+            <button type="submit" class="btn-primary">Subir foto</button>
+        </form>
+        {% endif %}
+    </div>
+
+    <!-- Reseñas -->
+    <div class="reviews-section">
+        <h3>💬 Reseñas de clientes</h3>
+        {% if reviews %}
+            <div class="reviews-list">
+                {% for r in reviews %}
+                <div class="review-card">
+                    <div class="review-top">
+                        <div class="review-autor">{{ r[2] }}</div>
+                        <div class="review-stars">
+                            {% for i in range(1, 6) %}
+                                <span class="star small
+                                {% if i <= r[0] %}filled{% endif %}">★</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if r[1] %}<p class="review-texto">{{ r[1] }}</p>{% endif %}
+                    <p class="review-fecha">{{ r[3][:10] }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-reviews">
+                <p>😊 Sé el primero en dejar una reseña</p>
+                {% if not es_dueno %}
+                <a href="/calificar/{{ proveedor.id }}" class="btn-primary">
+                    ⭐ Calificar ahora
+                </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- =============================================
+     MODAL — Ver foto grande
+     ============================================= -->
+<div id="modal-foto" onclick="cerrarFoto()"
+     style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+            z-index:999; align-items:center; justify-content:center; cursor:zoom-out">
+    <img id="modal-img" style="max-width:90vw; max-height:90vh; border-radius:12px">
+</div>
+
+<!-- =============================================
+     MODAL — Reportar proveedor
+     ============================================= -->
+<div id="modal-reporte" class="modal-overlay" onclick="cerrarReporte(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+
+        <div class="modal-header">
+            <div>
+                <h3>🚨 Reportar proveedor</h3>
+                <p>Estás reportando a <strong>{{ proveedor.nombre }}</strong></p>
+            </div>
+            <button class="modal-close" onclick="cerrarReporte()">✕</button>
+        </div>
+
+        <form action="/reportar/{{ proveedor.id }}" method="POST" class="form-modern">
+
+            <div class="form-group">
+                <label>Motivo del reporte</label>
+                <select name="motivo" required>
+                    <option value="">Selecciona un motivo</option>
+                    <option value="perfil_falso">🎭 Perfil falso o información falsa</option>
+                    <option value="estafa">💸 Intento de estafa</option>
+                    <option value="acoso">😡 Acoso o comportamiento inapropiado</option>
+                    <option value="no_aparecio">🚫 No se presentó al trabajo</option>
+                    <option value="mal_trabajo">🔧 Trabajo mal realizado</option>
+                    <option value="otro">📋 Otro motivo</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Cuéntanos más (opcional)</label>
+                <textarea name="descripcion" rows="3"
+                    placeholder="Describe lo que pasó con el mayor detalle posible...">
+                </textarea>
+            </div>
+
+            <p class="modal-aviso">
+                ⚠️ Los reportes falsos pueden resultar en la suspensión de tu acceso
+            </p>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn-reportar">Enviar reporte</button>
+                <button type="button" onclick="cerrarReporte()"
+                        class="btn-ver">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// ---- Modal foto ----
+function abrirFoto(src) {
+    document.getElementById('modal-img').src = src;
+    document.getElementById('modal-foto').style.display = 'flex';
+}
+function cerrarFoto() {
+    document.getElementById('modal-foto').style.display = 'none';
+}
+
+// ---- Modal reporte ----
+function abrirReporte() {
+    document.getElementById('modal-reporte').classList.add('activo');
+    document.body.style.overflow = 'hidden';
+}
+function cerrarReporte(e) {
+    if (!e || e.target === document.getElementById('modal-reporte')) {
+        document.getElementById('modal-reporte').classList.remove('activo');
+        document.body.style.overflow = '';
+    }
+}
+
+// Cerrar con Escape
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        cerrarFoto();
+        cerrarReporte();
+    }
+});
+</script>
+
+{% endblock %}

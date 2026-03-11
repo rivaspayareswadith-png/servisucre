@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="page-split">
+    <div class="split-left">
+        <div class="split-content">
+            <h2>Empieza a conseguir<br><em>clientes hoy</em></h2>
+            <p>Regístrate gratis y llega a cientos de personas en Sincelejo.</p>
+            <ul class="beneficios">
+                <li>✅ Registro 100% gratuito</li>
+                <li>✅ Los clientes te contactan por WhatsApp</li>
+                <li>✅ Visible para toda Sincelejo y Sucre</li>
+                <li>✅ Edita tu perfil cuando quieras</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="split-right">
+        <div class="form-card">
+            <h3>📋 Crea tu perfil</h3>
+
+            {% if error %}
+                <div class="alert-error">⚠️ {{ error }}</div>
+            {% endif %}
+
+            <form action="/registro" method="POST" class="form-modern">
+                <div class="form-group">
+                    <label>Nombre completo</label>
+                    <input type="text" name="nombre" placeholder="Ej: Carlos Pérez" required>
+                </div>
+                <div class="form-group">
+                    <label>Servicio principal</label>
+                    <select name="servicio" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="plomero">🔧 Plomería</option>
+                        <option value="electricista">⚡ Electricidad</option>
+                        <option value="clases">📚 Clases particulares</option>
+                        <option value="domicilio">🛵 Domicilios</option>
+                        <option value="peluqueria">✂️ Peluquería</option>
+                        <option value="costura">🪡 Costura</option>
+                        <option value="mecanico">🔩 Mecánica</option>
+                        <option value="pintura">🖌️ Pintura</option>
+                        <option value="otro">📦 Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Barrio donde trabajas</label>
+                    <input type="text" name="barrio" placeholder="Ej: La Castellana, Centro..." required>
+                </div>
+                <div class="form-group">
+                    <label>Número de WhatsApp (será tu usuario)</label>
+                    <input type="text" name="telefono" placeholder="3001234567" required>
+                </div>
+                <div class="form-group">
+                    <label>Cuéntanos sobre tu servicio</label>
+                    <textarea name="descripcion" rows="2"
+                        placeholder="Experiencia, precios, disponibilidad..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="password" placeholder="Mínimo 6 caracteres" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" name="confirmar" placeholder="Repite tu contraseña" required>
+                </div>
+                <button type="submit" class="btn-primary full">Crear mi perfil ✨</button>
+            </form>
+
+            <p class="auth-link">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

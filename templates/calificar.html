@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="calificar-page">
+    <div class="form-card">
+        <h3>⭐ Calificar proveedor</h3>
+        <p>Tu opinión ayuda a otras personas a elegir mejor</p>
+
+        <form action="/calificar/{{ proveedor_id }}" method="POST" class="form-modern">
+
+            <div class="form-group">
+                <label>Tu nombre (opcional)</label>
+                <input type="text" name="autor" placeholder="Ej: María García">
+            </div>
+
+            <div class="form-group">
+                <label>Calificación</label>
+                <div class="star-selector">
+                    {% for i in range(1, 6) %}
+                    <input type="radio" name="estrellas" value="{{ i }}"
+                           id="star{{ i }}" required>
+                    <label for="star{{ i }}" class="star-label">★</label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Comentario (opcional)</label>
+                <textarea name="comentario" rows="3"
+                    placeholder="¿Cómo fue tu experiencia?"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary full">Enviar calificación ⭐</button>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

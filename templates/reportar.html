@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="auth-page" style="max-width:520px">
+    <div class="form-card" style="text-align:left">
+        <div class="auth-icon">🚨</div>
+        <h3>Reportar proveedor</h3>
+        <p>Estás reportando a <strong>{{ nombre }}</strong>. 
+           Tu reporte será revisado por el equipo de ServiSucre.</p>
+
+        <form action="/reportar/{{ proveedor_id }}" 
+              method="POST" class="form-modern">
+
+            <div class="form-group">
+                <label>Motivo del reporte</label>
+                <select name="motivo" required>
+                    <option value="">Selecciona un motivo</option>
+                    <option value="perfil_falso">🎭 Perfil falso o información falsa</option>
+                    <option value="estafa">💸 Intento de estafa</option>
+                    <option value="acoso">😡 Acoso o comportamiento inapropiado</option>
+                    <option value="no_aparecio">🚫 No se presentó al trabajo</option>
+                    <option value="mal_trabajo">🔧 Trabajo mal realizado</option>
+                    <option value="otro">📋 Otro motivo</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Cuéntanos más (opcional)</label>
+                <textarea name="descripcion" rows="4"
+                    placeholder="Describe lo que pasó con el mayor detalle posible...">
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label style="font-size:0.8rem; color:var(--gris)">
+                    ⚠️ Los reportes falsos pueden resultar en la suspensión de tu acceso
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-reportar">Enviar reporte</button>
+                <a href="/perfil/{{ proveedor_id }}" class="btn-ver">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

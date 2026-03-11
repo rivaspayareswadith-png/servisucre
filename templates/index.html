@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<section class="hero">
+    <div class="hero-badge"> El marketplace de Sucre</div>
+    <h1 class="hero-title">
+        Encuentra el servicio<br>
+        <em>que necesitas hoy</em>
+    </h1>
+    <p class="hero-sub">
+        Conectamos a las personas de Sincelejo con plomeros, electricistas,
+        profesores, domiciliarios y más — todo en un solo lugar.
+    </p>
+    <div class="hero-actions">
+        <a href="/buscar" class="btn-primary"> Buscar un servicio</a>
+        <a href="/registro" class="btn-ghost">Ofrecer mis servicios →</a>
+    </div>
+    <div class="hero-stats">
+        <div class="stat"><strong>100%</strong><span>Local</span></div>
+        <div class="stat-div"></div>
+        <div class="stat"><strong>Gratis</strong><span>Registrarse</span></div>
+        <div class="stat-div"></div>
+        <div class="stat"><strong>Sucre</strong><span>Enfocado</span></div>
+    </div>
+</section>
+
+<section class="categorias-section">
+    <div class="section-header">
+        <h2>¿Qué necesitas hoy?</h2>
+        <p>Explora por categoría</p>
+    </div>
+    <div class="cat-grid">
+        <a href="/buscar?q=plomero" class="cat-card">
+            <span class="cat-icon">🔧</span>
+            <span class="cat-name">Plomería</span>
+        </a>
+        <a href="/buscar?q=electricista" class="cat-card">
+            <span class="cat-icon">⚡</span>
+            <span class="cat-name">Electricidad</span>
+        </a>
+        <a href="/buscar?q=clases" class="cat-card">
+            <span class="cat-icon">📚</span>
+            <span class="cat-name">Clases</span>
+        </a>
+        <a href="/buscar?q=domicilio" class="cat-card">
+            <span class="cat-icon">🛵</span>
+            <span class="cat-name">Domicilios</span>
+        </a>
+        <a href="/buscar?q=peluqueria" class="cat-card">
+            <span class="cat-icon">✂️</span>
+            <span class="cat-name">Peluquería</span>
+        </a>
+        <a href="/buscar?q=costura" class="cat-card">
+            <span class="cat-icon">🪡</span>
+            <span class="cat-name">Costura</span>
+        </a>
+        <a href="/buscar?q=mecanico" class="cat-card">
+            <span class="cat-icon">🔩</span>
+            <span class="cat-name">Mecánica</span>
+        </a>
+        <a href="/buscar?q=pintura" class="cat-card">
+            <span class="cat-icon">🖌️</span>
+            <span class="cat-name">Pintura</span>
+        </a>
+    </div>
+</section>
+
+<section class="como-funciona">
+    <div class="section-header">
+        <h2>¿Cómo funciona?</h2>
+        <p>Tres pasos simples</p>
+    </div>
+    <div class="pasos-grid">
+        <div class="paso">
+            <div class="paso-num">01</div>
+            <h3>Busca</h3>
+            <p>Escribe el servicio que necesitas y tu barrio en Sincelejo</p>
+        </div>
+        <div class="paso-arrow">→</div>
+        <div class="paso">
+            <div class="paso-num">02</div>
+            <h3>Elige</h3>
+            <p>Revisa los perfiles y elige al proveedor que más te conviene</p>
+        </div>
+        <div class="paso-arrow">→</div>
+        <div class="paso">
+            <div class="paso-num">03</div>
+            <h3>Contacta</h3>
+            <p>Habla directamente por WhatsApp y acuerda el trabajo</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

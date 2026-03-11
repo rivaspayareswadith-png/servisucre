@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="auth-page">
+    <div class="form-card" style="text-align:center">
+        <div style="font-size:3rem; margin-bottom:16px">✅</div>
+        <h3>Reporte enviado</h3>
+        <p style="color:var(--gris); margin:12px 0 28px">
+            Gracias por ayudarnos a mantener ServiSucre seguro. 
+            Revisaremos el reporte de <strong>{{ nombre }}</strong> 
+            a la brevedad posible.
+        </p>
+        <a href="/buscar" class="btn-primary">Volver a buscar</a>
+    </div>
+</div>
+
+{% endblock %}

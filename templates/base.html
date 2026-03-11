@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiSucre</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="/" class="logo">
+            <span class="logo-icon">S</span>
+            <span class="logo-text">ServiSucre</span>
+        </a>
+        <div class="nav-links">
+            <a href="/">Inicio</a>
+            <a href="/buscar">Explorar</a>
+            {% if session.proveedor_id %}
+                <a href="/perfil/{{ session.proveedor_id }}" class="nav-perfil">
+                    👤 Mi perfil
+                </a>
+                <a href="/logout" class="nav-logout">Cerrar sesión</a>
+            {% else %}
+                <a href="/login" class="nav-login">Iniciar sesión</a>
+                <a href="/registro" class="nav-cta">+ Publicar servicio</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<main>
+    {% block contenido %}{% endblock %}
+</main>
+
+<footer>
+    <div class="footer-top">
+        <div class="footer-col brand-col">
+            <div class="footer-brand">
+                <span class="logo-icon small">S</span>
+                <span>ServiSucre</span>
+            </div>
+            <p class="footer-slogan">
+                El marketplace de servicios locales de Sincelejo y el departamento de Sucre.
+                Conectamos talento con oportunidades. 🌴
+            </p>
+            <div class="footer-social">
+                <a href="#" class="social-btn">📘 Facebook</a>
+                <a href="#" class="social-btn">📸 Instagram</a>
+                <a href="#" class="social-btn">💬 WhatsApp</a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4>Plataforma</h4>
+            <ul>
+                <li><a href="/">🏠 Inicio</a></li>
+                <li><a href="/buscar">🔍 Buscar servicios</a></li>
+                <li><a href="/registro">📋 Publicar mi servicio</a></li>
+                <li><a href="/login">🔐 Iniciar sesión</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Categorías</h4>
+            <ul>
+                <li><a href="/buscar?q=plomero">🔧 Plomería</a></li>
+                <li><a href="/buscar?q=electricista">⚡ Electricidad</a></li>
+                <li><a href="/buscar?q=clases">📚 Clases particulares</a></li>
+                <li><a href="/buscar?q=domicilio">🛵 Domicilios</a></li>
+                <li><a href="/buscar?q=peluqueria">✂️ Peluquería</a></li>
+                <li><a href="/buscar?q=mecanico">🔩 Mecánica</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Información</h4>
+            <ul>
+                <li><a href="#">📜 Términos y condiciones</a></li>
+                <li><a href="#">🔒 Política de privacidad</a></li>
+                <li><a href="#">🚨 Reportar un problema</a></li>
+                <li><a href="#">❓ Preguntas frecuentes</a></li>
+                <li><a href="#">📩 Contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>¿Eres proveedor?</h4>
+            <p class="footer-proveedor-text">
+                Regístrate gratis y empieza a recibir clientes en tu barrio hoy mismo.
+            </p>
+            <a href="/registro" class="footer-cta">
+                + Publicar mi servicio
+            </a>
+            <div class="footer-stats">
+                <div class="f-stat">
+                    <strong>100%</strong>
+                    <span>Gratis</span>
+                </div>
+                <div class="f-stat">
+                    <strong>Sucre</strong>
+                    <span>Enfocado</span>
+                </div>
+                <div class="f-stat">
+                    <strong>Local</strong>
+                    <span>y cercano</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="footer-bottom">
+        <p class="footer-copy">© 2025 ServiSucre — Hecho con ❤️ en Sincelejo, Sucre, Colombia 🇨🇴</p>
+        <p class="footer-copy">Plataforma independiente · No afiliada a ninguna empresa gubernamental</p>
+    </div>
+</footer>
+
+</body>
+</html>

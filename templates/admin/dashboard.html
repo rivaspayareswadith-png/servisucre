@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin — ServiSucre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-body">
+
+<aside class="admin-sidebar">
+    <div class="admin-logo">🛡️ ServiSucre</div>
+    <nav class="admin-nav">
+        <a href="/admin" class="active">📊 Dashboard</a>
+        <a href="/admin/reportes">
+            🚨 Reportes
+            {% if stats.reportes_nuevos > 0 %}
+                <span class="badge-count">{{ stats.reportes_nuevos }}</span>
+            {% endif %}
+        </a>
+        <a href="/buscar" target="_blank">🌐 Ver plataforma</a>
+        <a href="/admin/logout" class="logout">🚪 Cerrar sesión</a>
+    </nav>
+</aside>
+
+<div class="admin-main">
+    <div class="admin-topbar">
+        <h1>Dashboard</h1>
+        <span class="admin-date">ServiSucre Admin Panel</span>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.total_proveedores }}</span>
+                <span class="stat-label">Total proveedores</span>
+            </div>
+        </div>
+        <div class="stat-card green">
+            <div class="stat-icon">✅</div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.activos }}</span>
+                <span class="stat-label">Activos</span>
+            </div>
+        </div>
+        <div class="stat-card red">
+            <div class="stat-icon">🚫</div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.suspendidos }}</span>
+                <span class="stat-label">Suspendidos</span>
+            </div>
+        </div>
+        <div class="stat-card yellow">
+            <div class="stat-icon">🚨</div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.reportes_nuevos }}</span>
+                <span class="stat-label">Reportes nuevos</span>
+            </div>
+        </div>
+        <div class="stat-card blue">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-data">
+                <span class="stat-num">{{ stats.total_resenas }}</span>
+                <span class="stat-label">Reseñas totales</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla proveedores -->
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <h2>Todos los proveedores</h2>
+        </div>
+        <div class="table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Servicio</th>
+                        <th>Barrio</th>
+                        <th>Teléfono</th>
+                        <th>⭐ Prom.</th>
+                        <th>🚨 Rep.</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in proveedores %}
+                    <tr class="{% if not p['activo'] %}row-suspendido{% endif %}
+                               {% if p['num_reportes'] >= 3 %}row-alerta{% endif %}">
+                        <td>#{{ p['id'] }}</td>
+                        <td><strong>{{ p['nombre'] }}</strong></td>
+                        <td>{{ p['servicio'] }}</td>
+                        <td>{{ p['barrio'] }}</td>
+                        <td>{{ p['telefono'] }}</td>
+                        <td>{{ '%.1f'|format(p['promedio'] or 0) }}</td>
+                        <td>
+                            {% if p['num_reportes'] > 0 %}
+                                <span class="badge-rep">{{ p['num_reportes'] }}</span>
+                            {% else %}0{% endif %}
+                        </td>
+                        <td>
+                            {% if p['activo'] %}
+                                <span class="badge-activo">Activo</span>
+                            {% else %}
+                                <span class="badge-suspendido">Suspendido</span>
+                            {% endif %}
+                        </td>
+                        <td class="acciones">
+                            <a href="/perfil/{{ p['id'] }}" target="_blank" 
+                               class="btn-accion ver">Ver</a>
+                            {% if p['activo'] %}
+                                <a href="/admin/proveedor/{{ p['id'] }}/suspender"
+                                   class="btn-accion suspender"
+                                   onclick="return confirm('¿Suspender a {{ p['nombre'] }}?')">
+                                   Suspender</a>
+                            {% else %}
+                                <a href="/admin/proveedor/{{ p['id'] }}/activar"
+                                   class="btn-accion activar">Activar</a>
+                            {% endif %}
+                            <a href="/admin/proveedor/{{ p['id'] }}/eliminar"
+                               class="btn-accion eliminar"
+                               onclick="return confirm('¿ELIMINAR permanentemente a {{ p['nombre'] }}?')">
+                               Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

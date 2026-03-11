@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="auth-page">
+    <div class="form-card">
+        <div class="auth-icon">🔐</div>
+        <h3>Iniciar sesión</h3>
+        <p>Accede para gestionar tu perfil en ServiSucre</p>
+
+        {% if error %}
+            <div class="alert-error">⚠️ {{ error }}</div>
+        {% endif %}
+
+        <form action="/login" method="POST" class="form-modern">
+            <div class="form-group">
+                <label>Número de WhatsApp (tu usuario)</label>
+                <input type="text" name="telefono" placeholder="3001234567" required>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-primary full">Entrar →</button>
+        </form>
+
+        <p class="auth-link">
+            ¿No tienes cuenta? 
+            <a href="/registro">Regístrate gratis</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}

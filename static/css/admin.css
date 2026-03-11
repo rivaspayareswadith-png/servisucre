@@ -1,0 +1,189 @@
+/* =============================================
+   SERVISUCRE — Panel Admin
+   ============================================= */
+
+.admin-body {
+    display: flex;
+    min-height: 100vh;
+    background: #F0F2F5;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ---- SIDEBAR ---- */
+.admin-sidebar {
+    width: 240px;
+    background: var(--oscuro);
+    min-height: 100vh;
+    padding: 28px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+}
+.admin-logo {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 800;
+    padding: 0 8px;
+    letter-spacing: -0.3px;
+}
+.admin-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.admin-nav a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.admin-nav a:hover,
+.admin-nav a.active {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+.admin-nav a.logout { margin-top: auto; color: rgba(255,100,100,0.7); }
+.admin-nav a.logout:hover { color: #ff6b6b; }
+
+.badge-count {
+    background: #EF4444;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 99px;
+    margin-left: auto;
+}
+
+/* ---- MAIN ---- */
+.admin-main {
+    margin-left: 240px;
+    flex: 1;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.admin-topbar h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+.admin-date { color: var(--gris); font-size: 0.88rem; }
+
+/* ---- STATS ---- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 16px;
+}
+.stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1.5px solid #E5E7EB;
+}
+.stat-card.green { border-color: #A7F3D0; background: #F0FDF4; }
+.stat-card.red   { border-color: #FECACA; background: #FFF5F5; }
+.stat-card.yellow{ border-color: #FDE68A; background: #FFFBEB; }
+.stat-card.blue  { border-color: #BFDBFE; background: #EFF6FF; }
+.stat-icon { font-size: 1.6rem; }
+.stat-data { display: flex; flex-direction: column; gap: 2px; }
+.stat-num  { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+.stat-label{ font-size: 0.78rem; color: var(--gris); }
+
+/* ---- CARD ---- */
+.admin-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1.5px solid #E5E7EB;
+    overflow: hidden;
+}
+.admin-card-header {
+    padding: 20px 24px;
+    border-bottom: 1.5px solid #F3F4F6;
+}
+.admin-card-header h2 { font-size: 1.1rem; font-weight: 700; }
+
+/* ---- TABLA ---- */
+.table-wrap { overflow-x: auto; }
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+.admin-table thead tr {
+    background: #F9FAFB;
+}
+.admin-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--gris);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1.5px solid #E5E7EB;
+}
+.admin-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #F3F4F6;
+    vertical-align: middle;
+}
+.admin-table tbody tr:hover { background: #FAFAFA; }
+.row-suspendido { opacity: 0.5; }
+.row-alerta td:first-child { border-left: 3px solid #EF4444; }
+
+/* ---- BADGES ---- */
+.badge-activo {
+    background: #ECFDF5; color: #059669;
+    padding: 3px 10px; border-radius: 99px;
+    font-size: 0.75rem; font-weight: 700;
+}
+.badge-suspendido {
+    background: #FEF2F2; color: #DC2626;
+    padding: 3px 10px; border-radius: 99px;
+    font-size: 0.75rem; font-weight: 700;
+}
+.badge-rep {
+    background: #FEF3C7; color: #D97706;
+    padding: 3px 10px; border-radius: 99px;
+    font-size: 0.75rem; font-weight: 700;
+}
+.badge-alerta {
+    background: #FEF2F2; color: #DC2626;
+    border: 1px solid #FECACA;
+    font-size: 0.72rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 99px;
+}
+
+/* ---- BOTONES ACCIONES ---- */
+.acciones { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-accion {
+    padding: 5px 12px; border-radius: 7px;
+    font-size: 0.78rem; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+}
+.btn-accion.ver       { background: #EFF6FF; color: #2563EB; }
+.btn-accion.suspender { background: #FEF3C7; color: #D97706; }
+.btn-accion.activar   { background: #ECFDF5; color: #059669; }
+.btn-accion.eliminar  { background: #FEF2F2; color: #DC2626; }
+.btn-accion:hover     { filter: brightness(0.92); }
